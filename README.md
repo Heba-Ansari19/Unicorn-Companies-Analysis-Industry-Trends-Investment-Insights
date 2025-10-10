@@ -6,7 +6,7 @@ This project analyzes unicorn companies to help an investment firm identify the 
 
 Unicorn companies are private startups valued at over $1 billion, and tracking their growth reveals where the next wave of innovation and opportunity lies. In this project, we supported an **investment firm by analyzing unicorn data across industries and years**. The firm wanted to understand **which industries are producing the most unicorns and how their valuations have evolved between 2019 and 2021.**
 
-<img width="1400" height="931" alt="image" src="https://github.com/user-attachments/assets/521d3598-ef3c-4ec7-bb4b-f938911b52bd" />
+<img width="1000" height="931" alt="image" src="https://github.com/user-attachments/assets/521d3598-ef3c-4ec7-bb4b-f938911b52bd" />
 
 By working with a structured unicorn database, my analysis focused on three critical areas: identifying the most promising industries, understanding how many new unicorns each industry produced during the selected years, and evaluating their average valuations in billions of dollars. These insights provide competitive intelligence for the firm, helping it recognize where to direct its future investment portfolio.
 <br>
