@@ -1,5 +1,5 @@
 # Unicorn Companies Analysis: Industry Trends & Investment Insights
-This project analyzes unicorn companies to help an investment firm identify the **top-performing industries from 2019–2021**. Using SQL (PostgreSQL), I explored industry growth, average valuations, and the emergence rate of high-value startups, providing insights that guide portfolio structuring and strategic investment decisions.
+This project analyzes unicorn companies to help an investment firm identify the **top-performing industries from 2019–2021**. Using SQL (PostgreSQL), I analyzed industry growth, valuation trends, and the pace at which companies reach unicorn status to support portfolio allocation decisions.
 <br>
 <br>
 ## PROJECT OVERVIEW
@@ -9,8 +9,6 @@ The average annual return from stock market investments is around 10%, but inves
 In this project, I support an investment firm by analyzing unicorn companies—privately held startups valued at over $1 billion. The analysis focuses on understanding which industries are producing the most unicorns, how valuations differ across industries, how quickly companies achieve unicorn status, and whether these valuations are stable or concentrated among a few firms.
 
 By answering these questions, the project provides insights into emerging industry trends, capital efficiency, and investment risk. These insights can help the firm decide where to allocate capital and how to structure its portfolio for long-term growth.
-
-<img width="1000" height="931" alt="image" src="https://github.com/user-attachments/assets/521d3598-ef3c-4ec7-bb4b-f938911b52bd" />
 
 <br>
 
@@ -63,7 +61,7 @@ By answering these questions, the project provides insights into emerging indust
 
 ## TOOLS AND SKILLS USED
 
-* [SQL (PostgreSQL)](https://www.postgresql.org/download/) – Data querying, aggregation, and analysis
+* [SQL (PostgreSQL)](https://www.postgresql.org/download/) – Data validation, advanced querying, time-series analysis, and industry-level comparisons.
 
 <br>
 
@@ -91,9 +89,9 @@ Visualizations were used to clearly communicate key trends identified in the ana
 * Valuation growth **declined over time for top industries**. While average valuations were **highest in 2019, they dropped noticeably by 2021**, even as the number of unicorns increased. This suggests **more companies reached unicorn status, but at lower average valuations**.
 * Time to unicorn status varies by industry, but most companies take between **5 to 8 years to become unicorns**. **Auto & Transportation** and **Artificial Intelligence** reach unicorn status **faster**, while **Health**, **Data Analytics**, and **Internet Software** take **longer**.
 * **Internet Software & Services** shows the **highest capital efficiency**, generating the **highest valuation relative to funding raised**. Fintech and Mobile & Telecommunications also perform strongly in terms of valuation per funding dollar.
-* Year-over-year growth in unicorn creation is **highly uneven**. **Industries like Hardware**, **Supply Chain & Logistics**, **Artificial Intelligence**, and **Fintech** experienced **extremely high growth in 2021**, while some industries showed stagnation or decline in earlier years.
-* Unicorn valuations are heavily concentrated within industries. In many sectors, the **top 10% of companies control more than 50% of total industry valuation**, indicating reliance on a small number of dominant players.
-* Valuation stability **improved from 2019 to 2020**, but volatility **increased again in 2021**. Although average valuations fell, market uncertainty rose as more companies entered the unicorn category.
+* Year-over-year growth in unicorn creation is **highly uneven**. **Industries like Hardware**, **Supply Chain & Logistics**, **Artificial Intelligence**, and **Fintech** experienced **extremely high growth in 2021**, while some industries showed stagnation or decline in earlier years. Fintech unicorns grew by over 800% YoY in 2021
+* Unicorn valuations are heavily concentrated within industries. In many sectors, the **top 10% of companies control more than 60% of total industry valuation**, indicating reliance on a small number of dominant players.
+* Valuation stability **improved from 2019 to 2020**, but volatility **increased again in 2021**. Although average valuations dropped from $4.39B (2019) to $2.29B (2021), market uncertainty rose as more companies entered the unicorn category.
 
 <br>
 
