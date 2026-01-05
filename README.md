@@ -80,7 +80,7 @@ The initial exploration focused on understanding the overall structure of the da
 Advanced SQL techniques such as Common Table Expressions (CTEs), window functions, percentile calculations, and year-over-year comparisons were used. These methods allowed meaningful industry comparisons, trend analysis over time, and identification of concentration and volatility patterns that simple aggregations could not reveal.
 
 ### 4. Visualization
-While the core analysis was done using SQL, visual summaries (when applied) help highlight trends such as valuation growth, volatility, and industry dominance. Visuals make complex numerical patterns easier to understand for non-technical stakeholders.
+Visualizations were used to clearly communicate key trends identified in the analysis. Bar charts were created to highlight industries producing the highest number of unicorns, making industry dominance immediately visible. Line charts were used to show year-over-year growth in unicorn creation and changes in valuation stability over time. These visuals help translate complex trends into clear insights, enabling stakeholders to quickly understand growth patterns, volatility, and shifts in the unicorn landscape.
 
 <br>
 
