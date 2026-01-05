@@ -83,6 +83,18 @@ Advanced SQL techniques such as Common Table Expressions (CTEs), window function
 ### 4. Visualization
 Visualizations were used to clearly communicate key trends identified in the analysis. Bar charts were created to highlight industries producing the highest number of unicorns, making industry dominance immediately visible. Line charts were used to show year-over-year growth in unicorn creation and changes in valuation stability over time. These visuals help translate complex trends into clear insights, enabling stakeholders to quickly understand growth patterns, volatility, and shifts in the unicorn landscape.
 
+### Key Visual Insights
+
+**Top Unicorn-Producing Industries**
+![Top Unicorn-Producing Industries](charts/top_industries_unicorns.png)
+
+**Year-over-Year Growth in Unicorn Creation**
+![YoY Unicorn Growth](charts/yoy_unicorn_growth.png)
+
+**Valuation Stability Over Time**
+![Valuation Volatility](charts/valuation_volatility.png)
+
+
 <br>
 
 ## INSIGHTS AND FINDINGS
