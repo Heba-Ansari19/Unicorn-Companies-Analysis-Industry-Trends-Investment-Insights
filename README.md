@@ -1,26 +1,34 @@
-# Analyzing-Unicorn-Companies
+# Unicorn Companies Analysis: Industry Trends & Investment Insights
 This project analyzes unicorn companies to help an investment firm identify the **top-performing industries from 2019–2021**. Using SQL (PostgreSQL), I explored industry growth, average valuations, and the emergence rate of high-value startups, providing insights that guide portfolio structuring and strategic investment decisions.
 <br>
 <br>
 ## PROJECT OVERVIEW
 
-Unicorn companies are private startups valued at over $1 billion, and tracking their growth reveals where the next wave of innovation and opportunity lies. In this project, we supported an **investment firm by analyzing unicorn data across industries and years**. The firm wanted to understand **which industries are producing the most unicorns and how their valuations have evolved between 2019 and 2021.**
+The average annual return from stock market investments is around 10%, but investment firms aim to outperform this benchmark by identifying faster-growing and higher-value opportunities.
+
+In this project, I support an investment firm by analyzing unicorn companies—privately held startups valued at over $1 billion. The analysis focuses on understanding which industries are producing the most unicorns, how valuations differ across industries, how quickly companies achieve unicorn status, and whether these valuations are stable or concentrated among a few firms.
+
+By answering these questions, the project provides insights into emerging industry trends, capital efficiency, and investment risk. These insights can help the firm decide where to allocate capital and how to structure its portfolio for long-term growth.
 
 <img width="1000" height="931" alt="image" src="https://github.com/user-attachments/assets/521d3598-ef3c-4ec7-bb4b-f938911b52bd" />
 
-By working with a structured unicorn database, my analysis focused on three critical areas: identifying the most promising industries, understanding how many new unicorns each industry produced during the selected years, and evaluating their average valuations in billions of dollars. These insights provide competitive intelligence for the firm, helping it recognize where to direct its future investment portfolio.
 <br>
-<br>
+
 ## OBJECTIVE / KEY QUESTIONS
 
-* Which three industries produced the highest number of unicorns in 2019, 2020, and 2021 combined?
-* How many unicorns did these industries generate each year?
-* What was the average valuation (in billions, rounded to two decimals) of unicorns in these industries per year?
+* Which industries produce the highest number of unicorn companies?
+* How do unicorn valuations differ across industries and over time?
+* How long does it take companies to become unicorns across industries?
+* Which industries generate higher valuations relative to funding raised?
+* Which industries show the strongest year-over-year growth in unicorn creation?
+* Is unicorn valuation concentrated among a few companies within industries?
+* Are unicorn valuations becoming more or less stable over time?
+  
 <br>
 
 ## DATASET
 
-* Source: Unicorn Companies Database
+* Source: Unicorn companies database (provided for analysis)
 * Tables:
     * `dates` – records when each company became a unicorn and its founding year.
       | Column        | Description                                 |
@@ -55,211 +63,59 @@ By working with a structured unicorn database, my analysis focused on three crit
 
 ## TOOLS AND SKILLS USED
 
-* [SQL (PostgreSQL)](https://www.postgresql.org/download/)
-* Concepts: CTEs (Common Table Expressions), `JOIN`, Aggregations, Grouping, Filtering with `WHERE` and `EXTRACT`, Ordering, Subqueries.
-* Techniques Used: Data exploration, industry benchmarking, trend analysis, valuation averaging, filtering by year, and summarizing performance.
+* [SQL (PostgreSQL)](https://www.postgresql.org/download/) – Data querying, aggregation, and analysis
+
 <br>
 
 ## ANALYSIS & APPROACH
 
-### 1. Data Exploration: Understanding the Tables
-```sql
-
--- Overview of the table dates
-
-SELECT * 
-FROM dates
-LIMIT 5;
-```
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/7195fdcc-6ee2-4550-85b8-e83a1c64d8f7" />
-
-```sql
-
--- Overview of the table funding
-
-SELECT *
-FROM funding
-LIMIT 5;
-```
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/272a6535-060f-48a1-96a7-fd96432e14a9" />
-
-```sql
-
--- Overview of the table industries
-
-SELECT *
-FROM industries
-LIMIT 5;
-```
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/dddb462a-a2a4-423a-bb83-f62509750b83" />
-
-```sql
-
--- Overview of the table companies
-
-SELECT *
-FROM companies
-LIMIT 5;
-```
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/0df32bbd-6ed1-4bb5-a198-da1d1a40547b" />
-
-Before starting the main analysis, I explored the tables to **understand their structure and the kind of information they contained**. Checking a few rows from each table ensured the data was clean, consistent, and ready for aggregation and joins. Exploring the first few rows allowed me to **confirm that each table contained the expected information and that the data types were compatible for joins and calculations**. For example, I verified that `date_joined` could be extracted by year, valuation was numeric, and `company_id` was consistent across tables for proper joins.
+### 1. Data Cleaning
+The dataset was first validated to ensure reliability. I checked for missing values, incorrect data types, and unrealistic ranges in dates, funding, and valuations. No major data quality issues were identified, allowing the analysis to proceed without forced cleaning. This step ensured that all insights were based on complete and consistent data.
 
 
-### 2. Checking Columns and Data Types
-```sql
+### 2. Exploratory Analysis
+The initial exploration focused on understanding the overall structure of the data, including time ranges and the distribution of valuations and funding. Early patterns such as dominant industries and valuation ranges helped guide deeper analysis into growth trends, efficiency, and risk.
 
-SELECT table_name, column_name, data_type
-FROM information_schema.columns
-WHERE table_name IN ('dates', 'funding', 'industries', 'companies')
-ORDER BY table_name, ordinal_position;
-```
+### 3. Advanced Querying
+Advanced SQL techniques such as Common Table Expressions (CTEs), window functions, percentile calculations, and year-over-year comparisons were used. These methods allowed meaningful industry comparisons, trend analysis over time, and identification of concentration and volatility patterns that simple aggregations could not reveal.
 
-Using the `information_schema.columns` query, I **confirmed the column names, data types, and table structures.** This query lists all columns and their data types for the four main tables. **Knowing the data types was critical** — for example, confirming that valuation was numeric allowed me to calculate averages and convert to billions without errors. Checking the `date_joined` column type ensured I could **extract the year correctly for time-based analysis**. Additionally, seeing all columns in one place helped me decide which columns to include in joins, CTEs, and aggregations, streamlining the workflow and ensuring every query aligned with the table structure.
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/26801d77-05e5-4b7a-88be-aad0d196f320" />
-
-
-### 3. Identifying Top-Performing Industries (CTE1)
-```sql
-
-SELECT  
-        i.industry,
-        COUNT(*) AS number_of_companies
-FROM industries AS i
-INNER JOIN dates AS d
-	USING(company_id)
-WHERE EXTRACT(YEAR FROM d.date_joined) IN (2019, 2020, 2021)
-GROUP BY i.industry
-ORDER BY number_of_companies DESC
-LIMIT 3;
-```
-
-This step helped me find the **industries with the most unicorns created between 2019 and 2021**. I tested this CTE first to make sure the counts were correct, and it was identifying the top industries properly. By grouping and counting companies by industry, I focused only on the **strongest performers**. This was important because it let me ignore industries with very few unicorns and concentrate on the ones that really drive growth. Testing the CTE also helped confirm that the data matched correctly across tables.
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/53068580-166a-4e82-adac-5a09939a4508" />
-
-
-### 4. Calculating Yearly Valuations and Unicorn Counts (CTE2)
-```sql
-
-SELECT 
-        i.industry,
-        EXTRACT(YEAR FROM d.date_joined) AS year,
-        COUNT(i.company_id) AS num_unicorns,
-        ROUND(AVG(f.valuation), 2) AS avg_valuation
-FROM industries AS i
-INNER JOIN dates AS d
-	USING(company_id)
-INNER JOIN funding AS f
-	USING(company_id)
-WHERE EXTRACT(YEAR FROM d.date_joined) IN (2019, 2020, 2021)
-GROUP BY i.industry, year
-ORDER BY year ASC;
-```
-
-Next, I created the second CTE to look at these **top industries year by year**, showing not just total unicorns but also how their numbers and `valuations` changed each year. I tested this CTE separately to ensure the counts and average valuations made sense. Calculating averages helped me understand financial health, while counting unicorns showed growth trends. This step was key because it let me see **which industries were growing faster or slower over time.**
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/6b2d9a86-ba42-4587-b123-0b8bd0f644a6" />
-
-
-### 5. Final Combined Query (CTEs Integration)
-```sql
-
---- CTE1 top_performing_industries
-
-WITH top_performing_industries AS 
-(
-    SELECT  
-        i.industry,
-        COUNT(*) AS number_of_companies
-    FROM industries AS i
-    INNER JOIN dates AS d
-    	USING(company_id)
-    WHERE EXTRACT(YEAR FROM d.date_joined) IN (2019, 2020, 2021)
-    GROUP BY i.industry
-    ORDER BY number_of_companies DESC
-	LIMIT 3
-),
-
-
---- CTE2 top_valuation
-
-top_valuation AS 
-(
-    SELECT 
-        i.industry,
-        EXTRACT(YEAR FROM d.date_joined) AS year,
-        COUNT(i.company_id) AS num_unicorns,
-        ROUND(AVG(f.valuation), 2) AS avg_valuation
-    FROM industries AS i
-    INNER JOIN dates AS d
-   		USING(company_id)
-    INNER JOIN funding AS f
-    	USING(company_id)
-    WHERE EXTRACT(YEAR FROM d.date_joined) IN (2019, 2020, 2021)
-    GROUP BY i.industry, year
-    ORDER BY year ASC
-)
-
-
-
---- Final Query
-
-SELECT
-    industry,
-    year,
-    num_unicorns,
-    ROUND(AVG(avg_valuation) / 1000000000, 2) AS average_valuation_billions
-FROM top_valuation AS tv
-INNER JOIN top_performing_industries AS tpi
-	USING(industry)
-WHERE year IN (2019, 2020, 2021)
-  AND industry IN (SELECT industry FROM top_performing_industries)
-GROUP BY industry, year, num_unicorns
-ORDER BY year DESC, num_unicorns DESC;
-```
-
-Finally, I combined both CTEs in a single query, keeping only the **top industries and showing their yearly unicorn counts and average valuations**. I converted valuations into billions to make them easier to read. This provided both scale (`number_of_unicorns`) and value (`average_valuation`) — the two main factors investors care about. Testing the final query confirmed that all joins worked correctly and the numbers were reliable.
-
-By testing each CTE and combining them carefully, I was able to get trustworthy insights about the top industries, how they grew over time, and their financial impact, which helps make smarter investment decisions.
-
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/0fc2870b-cb34-435f-97f9-96530bf7d71e" />
+### 4. Visualization
+While the core analysis was done using SQL, visual summaries (when applied) help highlight trends such as valuation growth, volatility, and industry dominance. Visuals make complex numerical patterns easier to understand for non-technical stakeholders.
 
 <br>
-<br>
-
 
 ## INSIGHTS AND FINDINGS
 
-* **Fintech** led in overall unicorn creation, showing **rapid growth**, especially in **2021**.
-* **Internet Software & Services** consistently produced a **large number of unicorns year after year**.
-* **E-Commerce & Direct-to-Consumer** had **fewer unicorns compared to the other two**, but maintained **strong average valuations**.
-* Valuations were highest in 2019 across industries, showing a possible cooling-off in later years despite higher unicorn counts.
-* The **rise in 2021 unicorn counts** reflects global investor enthusiasm and easier access to funding.
+* **Fintech**, **Internet Software & Services**, and **E-commerce** are the **top unicorn-producing industries**, together accounting for a very large share of total unicorn companies. This shows strong and consistent activity in these sectors.
+* Unicorn creation **increased sharply in 2021**, especially in **Fintech (138 companies)**, **Internet Software & Services (119)**, and **E-commerce (47)**, indicating a surge in high-growth startups during this period.
+* Valuation growth **declined over time for top industries**. While average valuations were **highest in 2019, they dropped noticeably by 2021**, even as the number of unicorns increased. This suggests **more companies reached unicorn status, but at lower average valuations**.
+* Time to unicorn status varies by industry, but most companies take between **5 to 8 years to become unicorns**. **Auto & Transportation** and **Artificial Intelligence** reach unicorn status **faster**, while **Health**, **Data Analytics**, and **Internet Software** take **longer**.
+* **Internet Software & Services** shows the **highest capital efficiency**, generating the **highest valuation relative to funding raised**. Fintech and Mobile & Telecommunications also perform strongly in terms of valuation per funding dollar.
+* Year-over-year growth in unicorn creation is **highly uneven**. **Industries like Hardware**, **Supply Chain & Logistics**, **Artificial Intelligence**, and **Fintech** experienced **extremely high growth in 2021**, while some industries showed stagnation or decline in earlier years.
+* Unicorn valuations are heavily concentrated within industries. In many sectors, the **top 10% of companies control more than 50% of total industry valuation**, indicating reliance on a small number of dominant players.
+* Valuation stability **improved from 2019 to 2020**, but volatility **increased again in 2021**. Although average valuations fell, market uncertainty rose as more companies entered the unicorn category.
+
 <br>
 
-## RECOMMENDATIONS
+## BUSINESS RECOMMENDATIONS
 
-* Investment firms should **prioritize Fintech** as it shows the **strongest momentum and sheer scale of unicorn creation**.
-* Internet Software & Services remains a **safe bet with consistency and proven year-over-year performance**.
-* E-Commerce unicorns, though fewer, display **healthy valuations and could offer selective high-return opportunities**.
-* **Continuous tracking of valuations is necessary** since higher unicorn counts don’t always mean higher valuations — **market dynamics shift fast**.
-* Diversifying across these three industries **may provide the firm both stability (software) and aggressive growth** (fintech/e-commerce).
+* Focus investments on industries with **strong growth and high capital efficiency**, such as Internet Software & Services and Fintech, as they generate higher value with relatively lower funding.
+* **Avoid over-concentration** in industries where **valuation is dominated by a few companies**, as this increases risk if top firms underperform.
+* Balance the portfolio between fast-scaling industries (e.g., AI, Supply Chain & Logistics) and more mature sectors to manage volatility.
+* Closely monitor valuation trends during rapid growth periods, as increasing unicorn counts do not always mean higher average valuations.
+* Use time-to-unicorn insights to align investment horizons with industry maturity cycles and expected return timelines.
+
 <br>
 
 ## FINAL NOTES
 
-This project demonstrated how I used SQL to uncover meaningful business insights from structured data. By narrowing the analysis to the top three industries, I provided the investment firm with a clear, evidence-backed picture of where the unicorn ecosystem is thriving. These findings help guide **smarter portfolio strategies, ensuring decisions are based on industry performance trends rather than speculation**. Future extensions could include geographical comparisons or investor-specific performance to provide an even more targeted investment strategy.
+This analysis provides a structured view of the unicorn ecosystem from an investment perspective. By combining growth trends, valuation patterns, capital efficiency, and stability metrics, the project highlights both opportunities and risks across industries. The insights help support data-driven portfolio decisions and demonstrate how advanced SQL analysis can be applied to real-world investment strategies.
+
 <br>
-<br>
+
 ## REFERENCES
 
+* Medium
 * [DataCamp](https://app.datacamp.com/)
 * [What Is the Average Stock Market Return?](https://www.nerdwallet.com/article/investing/average-stock-market-return)
-<br>
 <br>
