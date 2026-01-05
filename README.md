@@ -28,6 +28,7 @@ By answering these questions, the project provides insights into emerging indust
 
 * Source: Unicorn companies database (provided for analysis)
 * Tables:
+  
     * `dates` – records when each company became a unicorn and its founding year.
       | Column        | Description                                 |
       | ------------- | ------------------------------------------- |
@@ -43,11 +44,13 @@ By answering these questions, the project provides insights into emerging indust
       | funding           | The amount of funding raised in US dollars. |
       | select\_investors | A list of key investors in the company.     |
 
+
     * `industries` – shows the industry each company operates in.
       | Column      | Description                                |
       | ----------- | ------------------------------------------ |
       | company\_id | A unique ID for the company.               |
       | industry    | The industry that the company operates in. |
+
 
     * `companies` – provides details on the company name, location (city, country, continent).
       | Column      | Description                                       |
