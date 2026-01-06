@@ -127,7 +127,7 @@ This analysis provides a structured view of the unicorn ecosystem from an invest
 
 ## REFERENCES
 
-* Medium
+* Medium [What Unicorn Companies Reveal About Industry Growth, Valuation, and Investment Risk?](https://medium.com/@Heba_Ansari/what-unicorn-companies-reveal-about-industry-growth-and-investment-risk-6771f33f5124)
 * [DataCamp](https://app.datacamp.com/)
 * [What Is the Average Stock Market Return?](https://www.nerdwallet.com/article/investing/average-stock-market-return)
 <br>
